@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Temperature Hot</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background: url(images/bg-image.jpg) no-repeat;
+            background-size: cover;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <br>
+        <form class="col-md-6 m-auto py-5">
+            <div class="input-group mb-3">
+                <input id="city" type="text" class="form-control" placeholder="Enter a location for Weather ...">
+                <div class="input-group-append">
+                    <button id="searchBtn" type="button" class="btn btn-danger">Search</button>
+                </div>
+            </div>
+        </form>
+        <div class="weather-status text-white text-center">
+            <img id="icon" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <h1 id="showCity" style="font-size: 60px;">City</h1>
+            <h3 style="font-size: 40px;"><span id="celcius">Temperature</span>&deg;C</h3>
+            <h1 id="clouds" class="lead" style="font-size: 25px;">Weather</h1>
+        </div>
+    </div>
+
+    <script>
+        appKey = '4014ac2ef923af00d57188b86daf4dee';
+        appBase = 'http://api.openweathermap.org/data/2.5/weather';
+        
+        const getWeatherData = city => {
+            const url = `${appBase}?q=${city}&units=metric&appid=${appKey}`;
+            fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                document.getElementById('icon').setAttribute('src', `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
+                document.getElementById('showCity').innerText = data.name || 'City Not Found';
+                document.getElementById('celcius').innerText = data.main.temp;
+                document.getElementById('clouds').innerText = data.weather[0].main;
+                document.getElementById('city').value = '';
+            })
+        }
+
+        document.getElementById('searchBtn').addEventListener('click',() => {
+            const inputCity = document.getElementById('city').value;
+            getWeatherData(inputCity);
+        })
+        
+    </script>
+
+</body>
+
+</html>
